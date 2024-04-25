@@ -13,6 +13,9 @@ public class FilmsService {
         if(FilmHolder.getInstance().stream().noneMatch(filmFilter -> filmFilter.getEpisode_id() == filme.getEpisode_id())){
             throw new Exception("Id não existe.");
         }
+        if(!filme.isValid()){
+            throw new Exception("Filme está com campos nulos ou vazios.");
+        }
 
         List<Filme> filmes = FilmHolder.getInstance();
         for (int i = 0; i < filmes.size(); i++) {
@@ -31,5 +34,16 @@ public class FilmsService {
 
     public Filme getFilme(int id) {
         return FilmHolder.getInstance().stream().filter(film -> film.getEpisode_id() == id).findFirst().orElse(null);
+    }
+
+    public void criar(Filme filme) throws Exception {
+        if(FilmHolder.getInstance().stream().anyMatch(filmFilter -> filmFilter.getEpisode_id() == filme.getEpisode_id())){
+            throw new Exception("Id existe.");
+        }
+        if(!filme.isValid()){
+            throw new Exception("Filme está com campos nulos ou vazios.");
+        }
+        filme.setVersao(1);
+        FilmHolder.getInstance().add(filme);
     }
 }

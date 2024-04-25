@@ -26,6 +26,27 @@ public class Filme {
     private String created;
     private String edited;
     private String url;
-    private int versao;
+    private int versao = 1;
+
+    public boolean isValid() {
+        return !isEmpty(title)
+                && episode_id > 0
+                && !isEmpty(opening_crawl)
+                && !isEmpty(director)
+                && !isEmpty(producer)
+                && !isEmpty(release_date)
+                && characters != null //&& !characters.isEmpty()
+                && planets != null //&& !planets.isEmpty()
+                && starships != null //&& !starships.isEmpty()
+                && vehicles != null// && !vehicles.isEmpty()
+                && species != null //&& !species.isEmpty()
+                && !isEmpty(created)
+                && !isEmpty(edited)
+                && !isEmpty(url);
+    }
+
+    private boolean isEmpty(String value) {
+        return value == null || value.trim().isEmpty();
+    }
     
 }

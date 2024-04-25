@@ -105,5 +105,54 @@ class NttApplicationTests {
     }
 
 
+    @Test
+    void testCriarThrowsExceptionForInvalidFilm() {
+        FilmHolder.setFilmResponse(new ArrayList<>());
+        // Criando um Filme inválido
+        Filme filmeInvalido = Filme.builder()
+                .build(); // Todos os campos são nulos
+
+        try {
+            filmsService.criar(filmeInvalido);
+        } catch (Exception e) {
+            assertEquals("Filme está com campos nulos ou vazios.", e.getMessage());
+        }
+    }
+
+    @Test
+    void testCriarAddsValidFilmSuccessfully() throws Exception {
+        // Criando um Filme válido
+        FilmHolder.setFilmResponse(new ArrayList<>());
+        Filme filmeValido = Filme.builder()
+                .title("Título")
+                .episode_id(1)
+                .opening_crawl("Opening Crawl")
+                .director("Diretor")
+                .producer("Produtor")
+                .release_date("Data")
+                .characters(new ArrayList<>())
+                .planets(new ArrayList<>())
+                .starships(new ArrayList<>())
+                .vehicles(new ArrayList<>())
+                .species(new ArrayList<>())
+                .created("Criado")
+                .edited("Editado")
+                .url("URL")
+                .versao(1)
+                .build();
+
+        filmsService.criar(filmeValido);
+
+        // Verificando se o filme foi adicionado corretamente
+        List<Filme> filmes = FilmHolder.getInstance();
+        Filme filmeAdicionado = filmes.stream()
+                .filter(f -> f.getEpisode_id() == filmeValido.getEpisode_id())
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(filmeAdicionado);
+        assertEquals(filmeValido, filmeAdicionado);
+    }
+
 
 }
